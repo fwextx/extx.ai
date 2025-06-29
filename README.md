@@ -85,6 +85,13 @@ If it doesn't work on other devices:
 If it still doesn't work, open an Inbound Rule for port 5000.
 
 ---
+## Safe to ignore Errors
+You may see this error:
+```bash
+Failed to load llamamodel-mainline-cuda-avxonly.dll: LoadLibraryExW failed with error 0x7e
+Failed to load llamamodel-mainline-cuda.dll: LoadLibraryExW failed with error 0x7e
+```
+These errors are safe to ignore and do not affect the AI in any way.
 
 ## Tips
 
