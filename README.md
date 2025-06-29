@@ -3,7 +3,7 @@
 
 ---
 
-## 📅 Features
+## Features
 - ChatGPT-style web interface
 - Runs fully offline
 - Messages and history saved locally
