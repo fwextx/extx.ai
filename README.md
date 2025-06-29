@@ -3,6 +3,10 @@
 
 ---
 
+## License
+
+MIT License. Do not remove credit.
+
 ## Features
 - ChatGPT-style web interface
 - Runs fully offline
@@ -109,12 +113,6 @@ You may need to allow Python through Windows Firewall.
 
 **Q: My chats disappear after restarting?**\
 Check that your device ID isn’t resetting — it uses `localStorage`.
-
----
-
-## License
-
-MIT License. Do what you want, but don’t remove credit.
 
 ---
 
