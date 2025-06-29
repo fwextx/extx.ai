@@ -3,10 +3,6 @@
 
 ---
 
-## License
-
-MIT License. Do not remove credit.
-
 ## Features
 - ChatGPT-style web interface
 - Runs fully offline
