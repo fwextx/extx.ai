@@ -11,8 +11,6 @@ HISTORY_FILE = os.path.join(HISTORY_DIR, "history.json")
 
 os.makedirs(HISTORY_DIR, exist_ok=True)
 
-# ✅ Initialize GPT4All model globally (only once)
-# Make sure the model file name matches your download
 model = GPT4All("Nous-Hermes-2-Mistral-7B-DPO.Q4_0.gguf")
 
 def load_history():
@@ -32,7 +30,7 @@ def index():
 def generate_title_from_prompt(message):
     title_prompt = f"Summarize this message as a short 3-5 word chat title:\n\nUser: {message}\n\nTitle:"
     title = generate_with_stop(model, title_prompt, max_tokens=15, stop_tokens=["\n"])
-    return title.strip().strip('"')  # clean up quotes or line breaks
+    return title.strip().strip('"')
 
 @app.route("/api/chats")
 def get_chats():
@@ -87,7 +85,6 @@ def get_chat_messages():
 def generate_with_stop(model, prompt, max_tokens=200, stop_tokens=None):
     response = model.generate(prompt, max_tokens=max_tokens)
     if stop_tokens:
-        # Find earliest stop token occurrence and truncate
         for stop_token in stop_tokens:
             idx = response.find(stop_token)
             if idx != -1:
@@ -108,21 +105,18 @@ def post_chat_message():
     history = load_history()
     device_chats = history.setdefault(device_id, {})
 
-    # Create new chat if chat_id missing or invalid
     if not chat_id or chat_id not in device_chats:
         title = generate_title_from_prompt(message)
         chat_id = uuid.uuid4().hex[:8]
         device_chats[chat_id] = {
-            "title": title or message[:20],  # fallback to message snippet
+            "title": title or message[:20], 
             "messages": []
         }
 
     chat = device_chats[chat_id]
 
-    # Append user message to this chat only
     chat["messages"].append({"role": "user", "text": message})
     print(f"[{device_id}] [{chat_id}] has said: {message}")
-    # Build prompt from this chat’s last messages only
     recent_msgs = chat["messages"][-4:]
     prompt = "You are a helpful assistant.\n"
     for m in recent_msgs:
@@ -130,10 +124,8 @@ def post_chat_message():
         prompt += f"{role}: {m['text']}\n"
     prompt += "Assistant:"
 
-    # Generate response for this prompt only
     bot_response = generate_with_stop(model, prompt, max_tokens=1000, stop_tokens=["User:", "Assistant:"])
 
-    # Append bot response to this chat only
     chat["messages"].append({"role": "bot", "text": bot_response})
 
     save_history(history)
